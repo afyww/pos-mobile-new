@@ -49,7 +49,7 @@ function Login() {
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={{ flex: 1 }}>
-            <SafeAreaView className="bg-red-900 h-screen">
+            <SafeAreaView className="bg-red-900 h-full">
                 <ScrollView
                     className=""
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}

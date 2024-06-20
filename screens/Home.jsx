@@ -118,14 +118,13 @@ export default function Home() {
   };
 
   return (
-    <SafeAreaView className="bg-gray-100 h-screen">
+    <SafeAreaView className="bg-red-800 h-full">
       <ScrollView
         className=""
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        contentContainerStyle={{ flexGrow: 1 }}
       >
-        <View className="flex-1 items-center justify-center ">
+        <View className="">
           <View className="bg-red-800 rounded-b-3xl">
             <View className="space-y-4 p-10">
               <View className="flex-row justify-center space-x-1">
@@ -141,9 +140,9 @@ export default function Home() {
                 profil.map((profile, index) => (
                   <View
                     key={index}
-                    className="rounded-3xl border-4 border-amber-100 p-4 space-y-5"
+                    className="rounded-3xl border-4 border-amber-100 p-4"
                   >
-                    <View className="">
+                    <View className="space-y-4">
                       <Text className="text-xl font-extrabold text-white">
                         {profile.name}
                       </Text>
