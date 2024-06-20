@@ -49,6 +49,7 @@ function Login() {
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={{ flex: 1 }}>
+<<<<<<< HEAD
             <SafeAreaView className="bg-red-900 h-full">
                 <ScrollView
                     className=""
@@ -57,6 +58,20 @@ function Login() {
                     >
                     <View className="flex-1 items-center justify-center">
                         <View className="">
+=======
+            <SafeAreaView className="bg-red-900">
+                <ScrollView className="">
+                <View className="bg-red-900 h-screen flex-1 justify-center">
+                    <View className="p-10">
+                        <View>
+                            <Text className="text-6xl text-yellow-200 font-bold">BeilCoff</Text>
+                        </View>
+                        <View>
+                            <Text className="text-4xl text-white font-bold">Login</Text>
+                            <Text className="text-xl text-white font-light">Sign in to continue</Text>
+                        </View>
+                        <View className="space-y-4">
+>>>>>>> 52ec50953301f13c48758e781ab29b1b73d0ae5a
                             <View>
                                 <Text className="text-4xl text-yellow-200 font-bold">BeilCoff</Text>
                             </View>
@@ -101,6 +116,7 @@ function Login() {
                                 </View>
                             </View>
                         </View>
+                    </View>
                     </View>
                 </ScrollView>
             </SafeAreaView>

@@ -20,6 +20,7 @@ function Flashpage() {
     }, []);
 
     return (
+<<<<<<< HEAD
         <SafeAreaView className="bg-red-900 h-full">
             <ScrollView
                 className=""
@@ -28,6 +29,12 @@ function Flashpage() {
             >
                 <View className="flex-1 items-center justify-center">
                     <View className="space-y-3">
+=======
+        <SafeAreaView className="bg-red-900">
+            <ScrollView className="" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+                <View className="bg-red-900 h-screen flex-1 justify-center">
+                    <View className="p-10">
+>>>>>>> 52ec50953301f13c48758e781ab29b1b73d0ae5a
                         <View>
                             <Text className="text-4xl text-yellow-200 font-bold">BeilCoff</Text>
                         </View>
