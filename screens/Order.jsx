@@ -84,13 +84,7 @@ function Order() {
                   <DataTable.Cell><Text>{item.no_order}</Text></DataTable.Cell>
                   <DataTable.Cell><Text>{item.atas_nama}</Text></DataTable.Cell>
                   <DataTable.Cell><Text>{item.cart.user.name}</Text></DataTable.Cell>
-                  <DataTable.Cell>
-                  {item.cart.cartMenus && item.cart.cartMenus.map((cartMenu, cartIndex) => (
-                    <Text key={cartIndex}>
-                      {cartMenu.menu.name} - {cartMenu.quantity} - {cartMenu.notes}{"\n"}
-                    </Text>
-                  ))}
-                </DataTable.Cell>                  <DataTable.Cell>{item.payment_type}</DataTable.Cell>
+                  <DataTable.Cell>{item.payment_type}</DataTable.Cell>
                   <DataTable.Cell>{item.cart.total_amount}</DataTable.Cell>
                   <DataTable.Cell><Text>{item.status}</Text></DataTable.Cell>
                 </DataTable.Row>
