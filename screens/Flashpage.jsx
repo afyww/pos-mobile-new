@@ -20,8 +20,7 @@ function Flashpage() {
     }, []);
 
     return (
-<<<<<<< HEAD
-        <SafeAreaView className="bg-red-900 h-full">
+        <SafeAreaView className="bg-red-900 h-screen">
             <ScrollView
                 className=""
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
@@ -29,12 +28,6 @@ function Flashpage() {
             >
                 <View className="flex-1 items-center justify-center">
                     <View className="space-y-3">
-=======
-        <SafeAreaView className="bg-red-900">
-            <ScrollView className="" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-                <View className="bg-red-900 h-screen flex-1 justify-center">
-                    <View className="p-10">
->>>>>>> 52ec50953301f13c48758e781ab29b1b73d0ae5a
                         <View>
                             <Text className="text-4xl text-yellow-200 font-bold">BeilCoff</Text>
                         </View>
@@ -43,13 +36,13 @@ function Flashpage() {
                             <Text className="text-xl text-white font-light">As</Text>
                         </View>
                         <View className="flex-row space-x-2 ">
-                                <TouchableOpacity onPress={openGoogle}>
-                                    <Text className="text-lg font-light bg-white text-black p-1">Back Office</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={navigateToLogin}>
-                                    <Text className="text-lg font-light bg-white text-black p-1">Cashier</Text>
-                                </TouchableOpacity>
-                            </View>
+                            <TouchableOpacity onPress={openGoogle}>
+                                <Text className="text-lg font-light bg-white text-black p-1">Back Office</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={navigateToLogin}>
+                                <Text className="text-lg font-light bg-white text-black p-1">Cashier</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </ScrollView>

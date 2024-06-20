@@ -17,10 +17,10 @@ function History() {
                 <Appbar.BackAction onPress={() => navigation.goBack()} />
                 <Appbar.Content title="History" />
             </Appbar.Header>
-        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-            <View className="flex-1 bg-gray-100 space-y-5">
-            </View>
-        </ScrollView>
+            <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+                <View className="flex-1 bg-gray-100 space-y-5">
+                </View>
+            </ScrollView>
         </>
     )
 }
