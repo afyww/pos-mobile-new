@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { View, Text, ScrollView, RefreshControl, Image } from "react-native";
+import { View, Text, ScrollView, RefreshControl, Image, SafeAreaView } from "react-native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Appbar } from 'react-native-paper';
@@ -58,11 +58,11 @@ function Createorder() {
     <>
       <Appbar.Header className="rounded-b-xl">
         <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Content title="Set Order" />
+        <Appbar.Content title="Point Of Sale" />
       </Appbar.Header>
-      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-        <View className="flex-1 bg-gray-100">
-          <View className="flex-row justify-between p-4">
+      <SafeAreaView>
+        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+          <View className="flex-row justify-between p-2">
             {menu.length > 0 ? (
               menu.map((item, index) => (
                 <View key={index} className="p-5 bg-red-600 rounded-xl ">
@@ -78,8 +78,8 @@ function Createorder() {
             )}
           </View>
 
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     </>
   )
 }
