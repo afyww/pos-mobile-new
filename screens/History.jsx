@@ -89,6 +89,7 @@ function History() {
                                             <DataTable.Cell><Text>{item.no_order}</Text></DataTable.Cell>
                                             <DataTable.Cell><Text>{item.name}</Text></DataTable.Cell>
                                             <DataTable.Cell><Text>{item.kursi}</Text></DataTable.Cell>
+                                            <DataTable.Cell><Text>{item.order}</Text></DataTable.Cell>
                                             <DataTable.Cell><Text>{item.total_amount}</Text></DataTable.Cell>
                                             <DataTable.Cell><Text>{item.status}</Text></DataTable.Cell>
                                         </DataTable.Row>
