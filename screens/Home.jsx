@@ -98,86 +98,91 @@ export default function Home() {
     };
 
     return (
-        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-            <View className="bg-gray-100 space-y-5">
-                <View className="p-10 bg-red-800 rounded-3xl space-y-4">
-                    <View>
+        <View className="">
+            <ScrollView className="h-full" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+                <View className="space-y-5">
+                    <View className="p-10 bg-red-900 rounded-b-3xl space-y-4">
                         <View className="flex-row justify-center space-x-1">
-                            <Image className="my-auto " source={require('../assets/beilcoff.png')} />
+                            <Image className="w-fit h-fit" source={require('../assets/beilcoff.png')} />
                             <Text className="text-xl font-semibold text-white my-auto">Beilcoff</Text>
                         </View>
-                        <Text className="text-center text-lg font-semibold text-white">Semangat Bekerja, {user.name}</Text>
-                    </View>
-                    {profil && profil.map((profile, index) => (
-                        <View key={index} className="rounded-3xl p-4 space-y-5 border-4 border-amber-100">
-                            <View className="">
-                                <View className="my-auto">
-                                    <Text className="text-xl font-extrabold text-white">{profile.name}</Text>
+                        {profil && profil.map((profile, index) => (
+                            <View key={index} className="rounded-3xl p-4 space-y-5 border-4 border-amber-100 mx-24">
+                                <View className="">
+                                    <View className="my-auto">
+                                        <Text className="text-xl font-extrabold text-white">{profile.name}</Text>
+                                    </View>
+                                    <TouchableOpacity onPress={toggleLines}>
+                                        <Text
+                                            numberOfLines={showAllLines ? undefined : 1}
+                                            style={{ fontSize: 16, fontWeight: 'semibold', color: 'white' }}>
+                                            {profile.alamat}
+                                        </Text>
+                                    </TouchableOpacity>
                                 </View>
-                                <TouchableOpacity onPress={toggleLines}>
-                                    <Text
-                                        numberOfLines={showAllLines ? undefined : 1}
-                                        style={{ fontSize: 16, fontWeight: 'semibold', color: 'white' }}>
-                                        {profile.alamat}
-                                    </Text>
+                                <Text className="text-base font-bold text-white">{profile.jam}</Text>
+                            </View>
+                        ))}
+                    </View>
+                    <View className="flex-row justify-between mx-10">
+                        <View className="w-1/2 p-6">
+                            <View className="">
+                                <TouchableOpacity className="p-4 bg-red-800 rounded-xl" onPress={navigateToCreateOrder}>
+                                    <Text className="text-lg text-center my-auto font-extrabold text-white">Point Of Sale</Text>
                                 </TouchableOpacity>
                             </View>
-                            <Text className="text-base font-bold text-white">{profile.jam}</Text>
+                            <View className="p-4">
+                                <View className="p-3 space-y-4">
+                                    <View className="flex-row justify-between">
+                                        <TouchableOpacity onPress={navigateToOrder} className="">
+                                            <View className="p-5 rounded-xl bg-amber-300">
+                                                <Image className="w-10 h-10 mx-auto " source={require('../assets/listing.png')} />
+                                            </View>
+                                            <Text className="text-center text-lg text-black font-semibold my-auto">Listing</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={navigateToHistory} className="">
+                                            <View className="p-5 rounded-xl bg-amber-300">
+                                                <Image className="w-10 h-10 mx-auto" source={require('../assets/history.png')} />
+                                            </View>
+                                            <Text className="text-center text-lg text-black font-semibold my-auto">History</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={navigateToSetting} className="">
+                                            <View className="p-5 rounded-xl bg-amber-300">
+                                                <Image className="w-10 h-10 mx-auto" source={require('../assets/setting.png')} />
+                                            </View>
+                                            <Text className="text-center text-lg text-black font-semibold my-auto">Setting</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                            <View className="">
+                                <TouchableOpacity className="p-4 bg-red-800 rounded-xl" onPress={handleLogout}>
+                                    <Text className="text-lg text-center my-auto font-extrabold text-white">Logout</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    ))}
-                    <View className="flex-row justify-between">
-                        <View className="my-auto">
-                            <Text className="text-center text-lg text-white font-bold">Shift</Text>
-                        </View>
-                        <Text className="text-center text-lg text-white font-semibold my-auto">Afy</Text>
-                    </View>
-                    <View className="flex-row justify-between">
-                        <View className="">
-                            <Text className="text-lg text-white font-bold">Total Pendapatan</Text>
-                            <Text className="text-lg text-white font-bold">Rp.2.500.000,00</Text>
-                        </View>
-                        <TouchableOpacity className="p-2 rounded-xl my-auto bg-amber-200" onPress={navigateToSetllement}>
-                            <Text className="text-center text-lg text-red-800 font-semibold my-auto">Settlement</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                </View>
-                <View className="flex-row justify-around">
-                    <View className="w-2/5">
-                        <TouchableOpacity className="p-4 bg-yellow-500 rounded-xl" onPress={navigateToShift}>
-                            <Text className="text-lg text-center my-auto font-bold text-white">Set Shift</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View className="w-2/5">
-                        <TouchableOpacity className="p-4 bg-blue-500 rounded-xl" onPress={navigateToCreateOrder}>
-                            <Text className="text-lg text-center my-auto font-bold text-white">Set Order</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View className="p-4">
-                    <View className="rounded-2xl bg-white p-3 space-y-4">
-                        <View className="flex-row justify-around">
-                            <TouchableOpacity onPress={navigateToOrder} className="p-1 rounded-xl">
-                                <Image className="w-8 h-8 mx-auto" source={require('../assets/menu.png')} />
-                                <Text className="text-center text-lg text-red-800 font-extrabold my-auto">Listing</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={navigateToHistory} className="p-1 rounded-xl">
-                                <Image className="w-8 h-8 mx-auto" source={require('../assets/menu.png')} />
-                                <Text className="text-center text-lg text-red-800 font-semibold my-auto">History</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={navigateToSetting} className="p-1 rounded-xl">
-                                <Image className="w-8 h-8 mx-auto" source={require('../assets/menu.png')} />
-                                <Text className="text-center text-lg text-red-800 font-semibold my-auto">Setting</Text>
-                            </TouchableOpacity>
+                        <View className="w-1/2 p-6">
+                            <View className="my-auto space-y-5">
+                                <View className="flex-row justify-around items-end">
+                                    <View className="my-auto">
+                                        <Text className="text-center text-lg text-black font-bold">Shift</Text>
+                                    </View>
+                                    <Text className="text-center text-lg text-black font-semibold my-auto">{user.name}</Text>
+                                </View>
+                                <View className="items-end space-y-8">
+                                    <View className="">
+                                        <Text className="text-lg text-black font-bold">Total Pendapatan</Text>
+                                        <Text className="text-lg text-black font-bold">Rp.2.500.000,00</Text>
+                                    </View>
+                                    <TouchableOpacity className="p-4 bg-red-600 rounded-xl" onPress={navigateToSetllement}>
+                                        <Text className="text-lg text-center my-auto font-bold text-white">Settlement</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
                         </View>
                     </View>
                 </View>
-                <View className="p-4">
-                    <TouchableOpacity className="p-4 bg-red-600 rounded-xl" onPress={handleLogout}>
-                        <Text className="text-lg text-center my-auto font-bold text-white">Logout</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     );
 }
