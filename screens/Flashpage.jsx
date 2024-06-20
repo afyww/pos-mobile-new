@@ -22,7 +22,8 @@ function Flashpage() {
 
     return (
         <View className="">
-            <ScrollView className="h-full bg-red-900" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+            <ScrollView className="" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+            <View className="bg-red-900">
                 <View className="p-10">
                     <View>
                         <Text className="text-6xl text-yellow-200 font-bold">BeilCoff</Text>
@@ -40,6 +41,7 @@ function Flashpage() {
                             </TouchableOpacity>
                         </View>
                     </View>
+                </View>
                 </View>
             </ScrollView>
         </View>

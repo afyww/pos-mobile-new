@@ -99,7 +99,7 @@ export default function Home() {
 
     return (
         <View className="">
-            <ScrollView className="h-full" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+            <ScrollView className="" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 <View className="space-y-5">
                     <View className="p-10 bg-red-900 rounded-b-3xl space-y-4">
                         <View className="flex-row justify-center space-x-1">
