@@ -1,17 +1,8 @@
 import React, { useState, useCallback, useEffect } from "react";
-import {
-  View,
-  Text,
-  Alert,
-  TouchableOpacity,
-  ScrollView,
-  RefreshControl,
-  Image,
-  SafeAreaView,
-} from "react-native";
+import {View, Text, Alert, TouchableOpacity, ScrollView, RefreshControl, Image, SafeAreaView,} from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { logoutHandler, getProfil, fetchData } from "../api";
 
 export default function Home() {
   const [user, setUser] = useState({});
@@ -19,38 +10,17 @@ export default function Home() {
   const [refreshing, setRefreshing] = useState(false);
   const [showAllLines, setShowAllLines] = useState(false);
   const navigation = useNavigation();
-
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     try {
-      const token = await AsyncStorage.getItem("jwtToken");
-      if (!token) {
-        return Alert.alert("No token found", "You are not logged in.");
-      }
-      const response = await axios.post(
-        "https://admin.beilcoff.shop/api/logout",
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (response.data.success) {
+        await logoutHandler();
         await AsyncStorage.removeItem("jwtToken");
         navigation.navigate("Login");
-      } else {
-        Alert.alert("Logout failed", response.data.message);
-      }
     } catch (error) {
-      Alert.alert(
-        "Logout error",
-        error.response?.data?.message || "Something went wrong"
-      );
+        console.error('Error during logout:', error);
     }
-  };
+}, [navigation]);
 
-  const navigateToMenu = () => {
-    navigation.navigate("Menu");
-  };
+
 
   const navigateToOrder = () => {
     navigation.navigate("Order");
@@ -77,41 +47,27 @@ export default function Home() {
     setTimeout(() => setRefreshing(false), 2000);
   }, []);
 
-  useEffect(() => {
-    const fetchData = async (endpoint, setState) => {
-      try {
-        const token = await AsyncStorage.getItem("jwtToken");
-        if (!token) {
-          return Alert.alert(
-            "Unauthorized",
-            "Please log in to access this page."
-          );
-        }
 
-        const response = await axios.get(
-          `https://admin.beilcoff.shop/api/${endpoint}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        setState(response.data);
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          Alert.alert("Unauthorized", "Please log in to access this page.");
-        } else {
-          console.error("Error fetching data:", error);
-          Alert.alert(
-            "Error",
-            `Failed to fetch ${endpoint} data. Please try again later.`
-          );
-        }
+useEffect(() => {
+  const fetchUserProfil = async () => {
+    try {
+      const token = await AsyncStorage.getItem("jwtToken");
+      if (!token) {
+        navigation.navigate("Login");
+        return;
       }
-    };
 
-    fetchData("profil", setProfil);
-    fetchData("user", setUser);
-  }, []);
+      const userData = await fetchData(token);
+      const profil = await getProfil();
+      setUser(userData);
+      setProfil(profil);
+    } catch (error) {
+      console.error('Error in fetchUserData:', error);
+    }
+  };
+
+  fetchUserProfil();
+}, [navigation]);
 
   const toggleLines = () => {
     setShowAllLines(!showAllLines);
@@ -175,7 +131,7 @@ export default function Home() {
                     onPress={navigateToCreateOrder}
                   >
                     <Text className="text-2xl text-center my-auto font-extrabold text-white">
-                      Point Of Sale
+                      Point Of Sale 
                     </Text>
                   </TouchableOpacity>
                 </View>

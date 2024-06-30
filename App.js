@@ -12,6 +12,7 @@ import History from "./screens/History";
 import Setting from "./screens/Setting";
 import Shift from "./screens/Shift";
 import Settlement from "./screens/Settlement";
+import Menudetail from "./screens/Menudetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -80,6 +81,12 @@ function App() {
         <Stack.Screen
           name="Createorder"
           component={Createorder}
+          options={{ headerShown: false }} // Hide header for this screen
+        />
+
+        <Stack.Screen
+          name="Menudetail"
+          component={Menudetail}
           options={{ headerShown: false }} // Hide header for this screen
         />
 

@@ -3,28 +3,28 @@ import { View, TextInput, TouchableOpacity, Text, Alert, KeyboardAvoidingView, S
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { handleLogin } from '../api';
 
 function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const navigation = useNavigation();
     const [refreshing, setRefreshing] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-    const handleLogin = async () => {
+    const handleSubmit = async () => {
         try {
-            const response = await axios.post('https://admin.beilcoff.shop/api/login', {
-                email,
-                password,
-            });
+            const response = await handleLogin({ email, password });
+            console.log('Login response:', response);
 
-            if (response.data.success) {
-                await AsyncStorage.setItem('jwtToken', response.data.token);
+            if (response && response.success) {
+                await AsyncStorage.setItem('jwtToken', response.token);
                 navigation.navigate('Home');
             } else {
-                Alert.alert('Login failed', response.data.message);
+                Alert.alert('Login failed', response?.message || 'Invalid response from server');
             }
         } catch (error) {
-            Alert.alert('Login error', error.response?.data?.message || 'Something went wrong');
+            console.error('Login error:', error);
+            Alert.alert('Login error', error.message || 'Something went wrong');
         }
     };
 
@@ -40,6 +40,7 @@ function Login() {
     const navigateToRegister = () => {
         navigation.navigate('Register');
     };
+
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         setTimeout(() => setRefreshing(false), 2000);
@@ -94,7 +95,7 @@ function Login() {
                                 <View className="flex items-center">
                                     <TouchableOpacity
                                         className="border-4 border-yellow-200 p-2 w-3/4 rounded-3xl"
-                                        onPress={handleLogin}
+                                        onPress={handleSubmit}
                                     >
                                         <Text className="text-white text-center font-extrabold text-2xl">Sign In</Text>
                                     </TouchableOpacity>

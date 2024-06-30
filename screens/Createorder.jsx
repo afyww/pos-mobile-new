@@ -57,6 +57,7 @@ function Createorder() {
       console.log("API Response:", response.data);  // Log the entire response
 
       setMenuItem(response.data);
+      navigation.navigate('Menudetail', { item: response.data });
     } catch (error) {
       handleError(error);
     }
@@ -83,31 +84,40 @@ function Createorder() {
       </Appbar.Header>
       <SafeAreaView>
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-          <View className="flex flex-wrap p-2">
-            {menu.length > 0 ? (
-              menu.map((item, index) => (
-                <View key={index} className="p-2 bg-red-800 rounded-xl w-1/5">
-                  <View className="bg-white p-4 rounded-xl">
-                    <Image className="w-12 h-24 mx-auto" source={{ uri: `https://admin.beilcoff.shop/storage/${item.img}` }} />
+          <View className="flex-row p-4">
+            <View className="flex-1">
+              <View className="flex-wrap flex-row justify-around">
+                {menu.length > 0 ? (
+                  menu.map((item, index) => (
+                    <TouchableOpacity key={index} onPress={() => fetchMenuItem(item.id)} className="w-1/3 gap-2">
+                      <View className="bg-red-800 rounded-xl p-2">
+                        <View className="bg-white p-4 rounded-xl">
+                          <Image className="w-12 h-24 mx-auto" source={{ uri: `https://admin.beilcoff.shop/storage/${item.img}` }} />
+                        </View>
+                        <Text className="text-base text-white font-bold">{item.name}</Text>
+                        <Text className="text-xs text-white font-light" numberOfLines={1}>{item.description}</Text>
+                        <Text className="text-white text-sm">$ {item.price}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                ) : (
+                  <View className="flex-1 justify-center items-center w-full">
+                    <Text className="text-gray-600">No menu items available.</Text>
                   </View>
-                  <Text className="text-base text-white font-bold">{item.name}</Text>
-                  <Text className="text-xs text-white font-light" numberOfLines={1}>{item.description}</Text>
-                  <Text className="text-white text-sm">$ {item.price}</Text>
-                  <TouchableOpacity onPress={() => fetchMenuItem(item.id)}>
-                    <Text className="text-blue-500">View Details</Text>
-                  </TouchableOpacity>
-                </View>
-              ))
-            ) : (
-              <View className="flex-1 justify-center items-center">
-                <Text className="text-gray-600">No menu items available.</Text>
+                )}
               </View>
-            )}
+            </View>
+            <View className="bg-white p-2 rounded-xl w-1/4 h-64">
+              <Text className="text-center font-bold text-xl">Cart</Text>
+              <View className="flex-1 justify-center items-center">
+                <Text className="text-gray-600">Cart is empty.</Text>
+              </View>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
     </>
-  )
+  );
 }
 
 export default Createorder;
