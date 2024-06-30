@@ -56,8 +56,8 @@ function Login() {
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                     contentContainerStyle={{ flexGrow: 1 }}
                 >
-                    <View className="flex-1 items-center justify-center">
-                        <View className="">
+                    <View className="flex-1 justify-center">
+                        <View className="mx-52">
                             <View>
                                 <Text className="text-4xl text-yellow-200 font-bold">BeilCoff</Text>
                             </View>

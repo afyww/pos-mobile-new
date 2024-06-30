@@ -47,16 +47,17 @@ export const getProfil = async () => {
 
 export const logoutHandler = async () => {
   try {
-      const token = await AsyncStorage.getItem('token');
+      const token = await AsyncStorage.getItem('jwtToken');
       setAuthHeader(token);
       await axiosInstance.post('/logout');
-      await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem('jwtToken');
       setAuthHeader(null);
   } catch (error) {
       console.error('Error during logout:', error);
       throw error;
   }
 };
+
 // REGISTER
 
 export const handleRegister = async (user) => {

@@ -80,7 +80,7 @@ function Order() {
                   <DataTable.Title>Order Id</DataTable.Title>
                   <DataTable.Title>Name</DataTable.Title>
                   <DataTable.Title>Chair</DataTable.Title>
-                  <DataTable.Title>Order</DataTable.Title>
+                  <DataTable.Title style={{flex: 1}}>Order</DataTable.Title>
                   <DataTable.Title>Payment</DataTable.Title>
                   <DataTable.Title>Total</DataTable.Title>
                   <DataTable.Title>Status</DataTable.Title>
@@ -93,7 +93,7 @@ function Order() {
                     <DataTable.Cell>{item.no_order}</DataTable.Cell>
                     <DataTable.Cell>{item.atas_nama}</DataTable.Cell>
                     <DataTable.Cell>{item.cart.user.name}</DataTable.Cell>
-                    <DataTable.Cell >
+                    <DataTable.Cell style={{ flex: 1}}>
                       {item.cart.cart_menus.map((cartMenu, idx) => (
                         <Text key={idx}>
                           {cartMenu.menu.name} - Quantity: {cartMenu.quantity} - Notes: {cartMenu.notes} {"\n"}

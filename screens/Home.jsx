@@ -18,7 +18,8 @@ export default function Home() {
     } catch (error) {
         console.error('Error during logout:', error);
     }
-}, [navigation]);
+  }, [navigation]);
+  
 
 
 
@@ -74,15 +75,17 @@ useEffect(() => {
   };
 
   return (
-    <SafeAreaView className="bg-red-800 h-full">
+    <SafeAreaView className="bg-red-800 h-screen">
       <ScrollView
-        className=""
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      >
-        <View className="">
-          <View className="bg-red-800 rounded-b-3xl">
-            <View className="space-y-4 p-10">
+            className=""
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            contentContainerStyle={{ flexGrow: 1 }}
+          >
+            <View className="p-4 flex-1 justify-center">
+            <View className="bg-red-800 rounded-b-3xl">
+            <View className="space-y-4 p-4">
               <View className="flex-row justify-center space-x-1">
                 <Image
                   className="w-fit h-fit"
@@ -99,11 +102,12 @@ useEffect(() => {
                     className="rounded-3xl border-4 border-amber-100 p-4"
                   >
                     <View className="space-y-4">
-                      <Text className="text-xl font-extrabold text-white">
+                      <Text className="text-xl text-center font-extrabold text-white">
                         {profile.name}
                       </Text>
                       <TouchableOpacity onPress={toggleLines}>
                         <Text
+                        className="text-center"
                           numberOfLines={showAllLines ? undefined : 1}
                           style={{
                             fontSize: 16,
@@ -114,7 +118,7 @@ useEffect(() => {
                           {profile.alamat}
                         </Text>
                       </TouchableOpacity>
-                      <Text className="text-base font-bold text-white">
+                      <Text className="text-base text-center font-bold text-white">
                         {profile.jam}
                       </Text>
                     </View>
