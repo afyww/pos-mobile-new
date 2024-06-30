@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { View, Text, ScrollView, RefreshControl, Image, SafeAreaView, Alert, TouchableOpacity } from "react-native";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Appbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { getMenus, getMenuDetails } from "../api"; // Import your API functions
 
 function Createorder() {
   const [refreshing, setRefreshing] = useState(false);
@@ -11,57 +11,30 @@ function Createorder() {
   const [menuItem, setMenuItem] = useState(null);
   const navigation = useNavigation();
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    fetchMenu();
-    setTimeout(() => setRefreshing(false), 2000);
-  }, []);
-
   const fetchMenu = async () => {
     try {
-      const token = await AsyncStorage.getItem("jwtToken");
-      if (!token) {
-        Alert.alert("Unauthorized", "Please log in to access this page.");
-        return;
-      }
-
-      const response = await axios.get("https://admin.beilcoff.shop/api/menus", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      console.log("API Response:", response.data);  // Log the entire response
-
-      if (Array.isArray(response.data)) {
-        setMenu(response.data);
-      } else {
-        console.log("No menus found or response format is incorrect");
-        setMenu([]);
-      }
+      const data = await getMenus(); // Call your getMenus function
+      setMenu(data); // Update state with menu data
     } catch (error) {
-      handleError(error);
+      handleError(error); // Handle errors
     }
   };
 
   const fetchMenuItem = async (id) => {
     try {
-      const token = await AsyncStorage.getItem("jwtToken");
-      if (!token) {
-        Alert.alert("Unauthorized", "Please log in to access this page.");
-        return;
-      }
-
-      const response = await axios.get(`https://admin.beilcoff.shop/api/menus/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      console.log("API Response:", response.data);  // Log the entire response
-
-      setMenuItem(response.data);
-      navigation.navigate('Menudetail', { item: response.data });
+      const data = await getMenuDetails(id); // Call your getMenuDetails function
+      setMenuItem(data); // Update state with menu item details
+      navigation.navigate('Menudetail', { item: data }); // Navigate to menu detail screen
     } catch (error) {
-      handleError(error);
+      handleError(error); // Handle errors
     }
   };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchMenu();
+    setTimeout(() => setRefreshing(false), 2000);
+  }, []);
 
   useEffect(() => {
     fetchMenu();

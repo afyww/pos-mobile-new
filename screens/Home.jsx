@@ -57,9 +57,9 @@ useEffect(() => {
         return;
       }
 
-      const userData = await fetchData(token);
+      const user = await fetchData(token);
       const profil = await getProfil();
-      setUser(userData);
+      setUser(user);
       setProfil(profil);
     } catch (error) {
       console.error('Error in fetchUserData:', error);
