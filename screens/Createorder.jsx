@@ -1,52 +1,95 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import {
   View,
   Text,
   ScrollView,
   RefreshControl,
   Image,
-  SafeAreaView,
   Alert,
   TouchableOpacity,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Appbar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { getMenus, getMenuDetails } from "../api"; // Import your API functions
+import { getMenus, getMenuDetails, fetchCart, fetchCartId, removeFromCart } from "../api";
 
 function Createorder() {
   const [refreshing, setRefreshing] = useState(false);
   const [menu, setMenu] = useState([]);
-  const [menuItem, setMenuItem] = useState(null);
+  const [cartId, setCartId] = useState(null);
+  const [cart, setCart] = useState({ cart_menus: [] });
   const navigation = useNavigation();
 
   const fetchMenu = async () => {
     try {
-      const data = await getMenus(); // Call your getMenus function
-      setMenu(data); // Update state with menu data
+      const data = await getMenus();
+      setMenu(data);
     } catch (error) {
-      handleError(error); // Handle errors
+      handleError(error);
     }
   };
 
   const fetchMenuItem = async (id) => {
     try {
-      const data = await getMenuDetails(id); // Call your getMenuDetails function
-      setMenuItem(data); // Update state with menu item details
-      navigation.navigate("Menudetail", { item: data }); // Navigate to menu detail screen
+      const data = await getMenuDetails(id);
+      setMenu(data);
+      navigation.navigate("Menudetail", { item: data });
     } catch (error) {
-      handleError(error); // Handle errors
+      handleError(error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchCartIdFromAPI = async () => {
+      try {
+        const id = await fetchCartId();
+        setCartId(id);
+      } catch (error) {
+        console.error('Error fetching cart ID:', error);
+        handleError(error);
+      }
+    };
+
+    fetchCartIdFromAPI();
+  }, []);
+
+  useEffect(() => {
+    const fetchCartData = async () => {
+      if (cartId) {
+        try {
+          const cartData = await fetchCart(cartId);
+          setCart(cartData);
+        } catch (error) {
+          console.error('Error fetching cart data:', error);
+          handleError(error);
+        }
+      }
+    };
+
+    fetchCartData();
+
+    const intervalId = setInterval(fetchCartData, 5000); // Poll every 5 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, [cartId]);
+
+  const handleRemoveFromCart = async (cartMenuId) => {
+    try {
+      console.log('Removing item from cart...', cartMenuId);
+      const newCartMenus = cart.cart_menus.filter(item => item.id !== cartMenuId);
+      setCart(prevCart => ({ ...prevCart, cart_menus: newCartMenus }));
+      
+      await removeFromCart(cartId, cartMenuId);
+      const updatedCart = await fetchCart(cartId);
+      setCart(updatedCart);
+    } catch (error) {
+      console.error('Error removing item from cart:', error);
+      handleError(error);
     }
   };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchMenu();
-    setTimeout(() => setRefreshing(false), 2000);
-  }, []);
-
-  useEffect(() => {
-    fetchMenu();
+    fetchMenu().finally(() => setRefreshing(false));
   }, []);
 
   const handleError = (error) => {
@@ -54,12 +97,12 @@ function Createorder() {
       Alert.alert("Unauthorized", "Please log in to access this page.");
     } else {
       console.error("Error fetching data:", error);
-      Alert.alert(
-        "Error",
-        "Failed to fetch menu data. Please try again later."
-      );
+      Alert.alert("Error", "Failed to fetch data. Please try again later.");
     }
   };
+
+  const memoizedMenu = useMemo(() => menu, [menu]);
+  const memoizedCart = useMemo(() => cart, [cart]);
 
   return (
     <>
@@ -74,17 +117,17 @@ function Createorder() {
         }
         contentContainerStyle={{ flexGrow: 1 }}
       >
-        <View className="flex-row p-4 space-x-4">
+        <View className="flex-row p-4">
           <View className="flex-1">
             <View className="flex-wrap flex-row justify-between">
-              {menu.length > 0 ? (
-                menu.map((item, index) => (
+              {memoizedMenu.length > 0 ? (
+                memoizedMenu.map((item, index) => (
                   <TouchableOpacity
                     key={index}
                     onPress={() => fetchMenuItem(item.id)}
-                    className="w-1/3 gap-3"
+                    className="w-1/3 p-2"
                   >
-                    <View className="p-2">
+                    <View className="">
                       <View className="bg-white rounded-xl">
                         <View className="p-4">
                           <Image
@@ -114,17 +157,35 @@ function Createorder() {
                 ))
               ) : (
                 <View className="flex-1 justify-center items-center w-full">
-                  <Text className="text-gray-600">
-                    No menu items available.
-                  </Text>
+                  <Text className="text-gray-600">No menu items available.</Text>
                 </View>
               )}
             </View>
           </View>
-          <View className="bg-white p-2 rounded-xl w-1/4 h-96">
-            <Text className="text-center font-bold text-xl">Cart</Text>
-            <View className="flex-1 justify-center items-center">
-              <Text className="text-gray-600">Cart is empty.</Text>
+          <View className="bg-blue-400 h-96 rounded-xl w-1/3">
+            <View className="border-b-2 border-white">
+              <Text className="text-center text-white p-4 font-bold text-2xl">Cart</Text>
+            </View>
+            {memoizedCart.cart_menus && memoizedCart.cart_menus.length > 0 ? (
+              memoizedCart.cart_menus.map((cartMenu, index) => (
+                <View key={index} className="flex-row justify-between p-2 border-white border-b-2 items-center">
+                  <View className="flex-1 space-y-1">
+                    <Text className="font-bold text-white text-sm">{cartMenu.quantity} x {cartMenu.menu.name}</Text>
+                    <Text className="font-extralight text-white text-sm">- {cartMenu.notes}</Text>
+                    <Text className="font-semibold text-white text-sm">Subtotal: Rp.{cartMenu.subtotal}</Text>
+                  </View>
+                  <TouchableOpacity className="bg-red-500 p-2 rounded-xl" onPress={() => handleRemoveFromCart(cartMenu.id)}>
+                    <Text className="text-white">Remove</Text>
+                  </TouchableOpacity>
+                </View>
+              ))
+            ) : (
+              <View className="flex-1 justify-center items-center">
+                <Text className="text-gray-600">Cart is empty.</Text>
+              </View>
+            )}
+            <View className="p-3">
+              <Text className="font-bold text-white text-xl">Total: Rp.{memoizedCart.total_amount}</Text>
             </View>
           </View>
         </View>

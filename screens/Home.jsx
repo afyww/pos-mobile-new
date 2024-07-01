@@ -75,7 +75,7 @@ useEffect(() => {
   };
 
   return (
-    <SafeAreaView className="bg-red-800 h-screen">
+    <SafeAreaView className="bg-red-800 h-full">
       <ScrollView
             className=""
             refreshControl={
